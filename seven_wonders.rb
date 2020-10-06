@@ -1,11 +1,25 @@
 require 'httparty'
 require "awesome_print"
 
-BASE_URL = "THE BASE URL FOR THE API REQUEST"
-LOCATION_IQ_KEY = "YOUR API TOKEN"
+# Dotenv.load
+
+BASE_URL = "https://locationiq.com/v1/search.php"
+LOCATION_IQ_KEY = "pk.4b1aa4bf89a16865a0f9ce9552944b09"
 
 def get_location(search_term)
 
+  response = HTTParty.get(BASE_URL, query: {
+      q: search_term,
+      key: LOCATION_IQ_KEY,
+      format: 'json'
+  })
+  seven_wonders_hash = {}
+  seven_wonders_hash[search_term] = {
+      "lat" => response.first["lat"],
+      "lon" => response.first["lon"]
+  }
+
+  return seven_wonders_hash
 end
 
 def find_seven_wonders
